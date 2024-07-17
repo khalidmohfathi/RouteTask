@@ -2,7 +2,7 @@ import axios from "axios";
 import { atom } from "recoil";
 
 function getCustomers() {
-   return axios.get('http://localhost:5000/customers')
+   return axios.get('https://route-task-database.onrender.com/customers')
       .then(({ data }) => {
          return data
       })
