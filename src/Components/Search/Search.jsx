@@ -83,7 +83,7 @@ export default function Search({ allTransactions, setTransactions, customers }) 
             <option value={2}>Amount</option>
          </select>
          <button className="btn btn-dark" type="button" disabled={search.value == 0} onClick={handleSearch}>
-            <i className='fa-solid fa-magnifying-glass fa-fw'></i> Search
+            <i className='fa-solid fa-magnifying-glass fa-fw'></i> <span className='d-md-inline d-none'>Search</span>
          </button>
       </div>
    )
