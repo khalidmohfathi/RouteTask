@@ -13,27 +13,36 @@ export default function Home() {
 
    useEffect(() => {
 
-      const dates = Array.from(new Set(transactions.map(transaction => transaction.date))).sort()
+      if ((Array.isArray(customers) && Array.isArray(transactions))) {
+         const dates = Array.from(new Set(transactions.map(transaction => transaction.date))).sort()
 
-      const amounts = dates.map(date => {
-         return transactions
-            .filter(transaction => transaction.date === date)
-            .reduce((acc, transaction) => acc + transaction.amount, 0);
-      });
+         const amounts = dates.map(date => {
+            return transactions
+               .filter(transaction => transaction.date === date)
+               .reduce((acc, transaction) => acc + transaction.amount, 0);
+         });
 
-      setChartData({
-         labels: dates,
-         datasets: [
-            {
-               label: 'Transactions Amount Per Day',
-               data: amounts,
-               fill: false,
+         setChartData({
+            labels: dates,
+            datasets: [
+               {
+                  label: 'Transactions Amount Per Day',
+                  data: amounts,
+                  fill: false,
 
-               tension: 0.1,
-            }
-         ]
-      });
+                  tension: 0.1,
+               }
+            ]
+         });
+      }
+
    }, [])
+
+   if (!(Array.isArray(customers) && Array.isArray(transactions))) {
+      return (
+         <h1 className='text-center my-5'><i className='fa fa-spin fa-spinner'></i></h1>
+      )
+   }
 
    return (
       <section>

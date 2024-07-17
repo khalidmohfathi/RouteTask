@@ -10,6 +10,12 @@ export default function Table() {
    const [customers, setCustomers] = useRecoilState(customerState)
    const [allTransactions, setAllTransactions] = useState(transactions)
 
+   if (!(Array.isArray(customers) && Array.isArray(transactions))) {
+      return (
+         <h1 className='text-center my-5'><i className='fa fa-spin fa-spinner'></i></h1>
+      )
+   }
+
    return (
       <section className='container'>
          <div className="row justify-content-center g-4">

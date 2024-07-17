@@ -42,6 +42,12 @@ export default function Graph() {
       }
    }, [selectedCustomerId]);
 
+   if (!(Array.isArray(customers) && Array.isArray(transactions))) {
+      return (
+         <h1 className='text-center my-5'><i className='fa fa-spin fa-spinner'></i></h1>
+      )
+   }
+
    return (
       <section className='container'>
          <div className="row justify-content-center g-4">
@@ -51,7 +57,7 @@ export default function Graph() {
                      <i className='fa-solid fa-user text-white'></i>
                   </label>
                   <div>
-                     <select id='graphSelect'  onChange={(e) => setSelectedCustomerId(Number(e.target.value))} defaultValue={""} className='form-select border-dark'>
+                     <select id='graphSelect' onChange={(e) => setSelectedCustomerId(Number(e.target.value))} defaultValue={""} className='form-select border-dark'>
                         <option hidden disabled value="">Choose Customer</option>
                         {customers.map((customer) => {
                            return (
