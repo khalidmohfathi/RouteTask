@@ -28,16 +28,17 @@ export default function Search({ allTransactions, setTransactions, customers }) 
    }
 
    const searchByName = () => {
+      console.log(allTransactions);
       const searchItem = input.current.value.toLowerCase();
-      const customerMap = new Map();
+      const customersMap = new Map();
 
       customers.forEach(customer => {
          if (customer.name.toLowerCase().includes(searchItem)) {
-            customerMap.set(Number(customer.id), customer);
+            customersMap.set(Number(customer.id), customer);
          }
       });
 
-      const result = allTransactions.filter(transaction => customerMap.has(transaction.customer_id));
+      const result = allTransactions.filter(transaction => customersMap.has(transaction.customer_id));
       return result;
    }
 

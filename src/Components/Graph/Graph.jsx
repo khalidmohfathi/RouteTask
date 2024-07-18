@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
-import { useRecoilState } from 'recoil';
-import { transactionState } from '../../Atoms/Transactions';
-import { customerState } from '../../Atoms/Customers';
+import useData from '../../Hooks/useData';
 
 export default function Graph() {
-   const [customers, setCustomers] = useRecoilState(customerState)
-   const [transactions, setTransactions] = useRecoilState(transactionState)
+
+   const { transactions, customers, loading } = useData()
    const [selectedCustomerId, setSelectedCustomerId] = useState(null);
    const [chartData, setChartData] = useState(null);
 
@@ -42,7 +40,7 @@ export default function Graph() {
       }
    }, [selectedCustomerId]);
 
-   if (!(Array.isArray(customers) && Array.isArray(transactions))) {
+   if (loading) {
       return (
          <h1 className='text-center my-5'><i className='fa fa-spin fa-spinner'></i></h1>
       )

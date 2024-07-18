@@ -1,44 +1,43 @@
 import React, { useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil'
-import { transactionState } from '../../Atoms/Transactions'
-import { customerState } from '../../Atoms/Customers'
 import { Line } from 'react-chartjs-2';
+import useData from '../../Hooks/useData';
 import Chart from 'chart.js/auto';
 
 export default function Home() {
 
-   const [transactions, setTransactions] = useRecoilState(transactionState)
-   const [customers, setCustomers] = useRecoilState(customerState)
+   const { allTransactions, customers, loading } = useData()
    const [chartData, setChartData] = useState(null)
 
+
+   function handleChart() {
+      const dates = Array.from(new Set(allTransactions.map(transaction => transaction.date))).sort()
+      const amounts = dates.map(date => {
+         return allTransactions
+            .filter(transaction => transaction.date === date)
+            .reduce((acc, transaction) => acc + transaction.amount, 0);
+      });
+
+      setChartData({
+         labels: dates,
+         datasets: [
+            {
+               label: 'Transactions Amount Per Day',
+               data: amounts,
+               fill: false,
+               tension: 0.1,
+            }
+         ]
+      });
+
+   }
+
    useEffect(() => {
-
-      if ((Array.isArray(customers) && Array.isArray(transactions))) {
-         const dates = Array.from(new Set(transactions.map(transaction => transaction.date))).sort()
-
-         const amounts = dates.map(date => {
-            return transactions
-               .filter(transaction => transaction.date === date)
-               .reduce((acc, transaction) => acc + transaction.amount, 0);
-         });
-
-         setChartData({
-            labels: dates,
-            datasets: [
-               {
-                  label: 'Transactions Amount Per Day',
-                  data: amounts,
-                  fill: false,
-
-                  tension: 0.1,
-               }
-            ]
-         });
+      if (!loading) {
+         handleChart()
       }
+   }, [loading]);
 
-   }, [])
-
-   if (!(Array.isArray(customers) && Array.isArray(transactions))) {
+   if (loading) {
       return (
          <h1 className='text-center my-5'><i className='fa fa-spin fa-spinner'></i></h1>
       )
@@ -55,7 +54,7 @@ export default function Home() {
                            <div className="card-body d-flex justify-content-between">
                               <div>
                                  <span className="d-block fw-medium mb-2">Transactions</span>
-                                 <h3>{transactions.length}</h3>
+                                 <h3>{allTransactions.length}</h3>
                               </div>
                               <div className="icon-container bg-primary rounded">
                                  <i className="fa-solid fa-right-left text-white" />
@@ -68,7 +67,7 @@ export default function Home() {
                            <div className="card-body d-flex justify-content-between">
                               <div>
                                  <span className="d-block fw-medium mb-2">Revenue</span>
-                                 <h3>{transactions.reduce((acc, value) => acc + value.amount, 0)} EGP</h3>
+                                 <h3>{allTransactions.reduce((acc, value) => acc + value.amount, 0)} EGP</h3>
                               </div>
                               <div className="icon-container bg-success rounded">
                                  <i className="fa-solid fa-dollar text-white" />

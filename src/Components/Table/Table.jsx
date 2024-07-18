@@ -1,16 +1,12 @@
 import React, { useState } from 'react'
 import Search from '../Search/Search'
-import { useRecoilState } from 'recoil';
-import { transactionState } from '../../Atoms/Transactions'
-import { customerState } from '../../Atoms/Customers';
+import useData from '../../Hooks/useData'
 
 export default function Table() {
 
-   const [transactions, setTransactions] = useRecoilState(transactionState)
-   const [customers, setCustomers] = useRecoilState(customerState)
-   const [allTransactions, setAllTransactions] = useState(transactions)
+   const { allTransactions, transactions, setTransactions, customers, loading } = useData()
 
-   if (!(Array.isArray(customers) && Array.isArray(transactions))) {
+   if (loading) {
       return (
          <h1 className='text-center my-5'><i className='fa fa-spin fa-spinner'></i></h1>
       )
@@ -28,8 +24,8 @@ export default function Table() {
                      <thead className='table-dark'>
                         <tr>
                            <th className='text-nowrap' scope="col"><i className="fa-solid fa-user fa-fw"></i> Customer Name</th>
-                           <th scope="col"><i className="fa-solid fa-dollar-sign fa-fw"></i> Amount</th>
-                           <th scope="col"><i className="fa-regular fa-calendar-days fa-fw"></i> Date</th>
+                           <th className='text-nowrap' scope="col"><i className="fa-solid fa-dollar-sign fa-fw"></i> Amount</th>
+                           <th className='text-nowrap' scope="col"><i className="fa-regular fa-calendar-days fa-fw"></i> Date</th>
                         </tr>
                      </thead>
                      <tbody className='table-group-divider'>
