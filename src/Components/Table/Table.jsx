@@ -8,7 +8,7 @@ export default function Table() {
 
    if (loading) {
       return (
-         <h1 className='text-center my-5'><i className='fa fa-spin fa-spinner'></i></h1>
+         <h4 className='text-center my-5'>Wait until (Render) refreshes database <i className='fa fa-spin fa-spinner fa-fw'></i></h4>
       )
    }
 
